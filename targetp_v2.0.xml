@@ -7,12 +7,18 @@
         <requirement type="package" version="@TOOL_VERSION@">targetp</requirement>
     </requirements>
     <version_command>/tsl/software/testing/targetp/2.0/x86_64/bin/targetp -version</version_command>
-     <command  detect_errors="exit_code"><![CDATA[
-          /tsl/software/testing/targetp/2.0/x86_64/bin/targetp -batch $batch -fasta $input_file  -format $format -org $organism $gff3 $mature -stdout > $output
-    ]]></command>
+     <command >
+
+         /tsl/software/testing/targetp/2.0/x86_64/bin/targetp -fasta ${inputFile} -format ${format} -batch ${batch} ${gff3} ${mature} -stdout > ${outputFile}
+    </command>
+    <stdio>
+        <!-- Anything other than zero is an error -->
+        <exit_code range="1:" />
+        <exit_code range=":-1" />
+    </stdio>
 
     <inputs>
-        <param name="input_file" type="data" format="fasta" label="Protein sequence FASTA file"/>
+        <param name="inputFile" type="data" format="fasta" label="Protein sequence FASTA file"/>
         <param name="batch" type="integer" value="100" label="Number of sequences that the tool will run simultaneously."/>
         <param name="format" type="select" label="Output format." help="Select betweeen Long or Short">
             <option value="long">long</option>
@@ -29,9 +35,8 @@
     </inputs>
 
     <outputs>
-        <param name="output" format="txt" />
+        <data name="outputFile" format="txt" label="TargetP result " />
     </outputs>
     <options sanitize="False" refresh="True"/>
 
 </tool>
-
